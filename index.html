@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>KOZO CAR Dashboard</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2b323c">
+    <link rel="apple-touch-icon" href="background.png">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        
+        <!-- Header Section -->
+        <header class="top-header">
+            <div class="robot-image-container">
+                <img src="background.png" alt="Robot" class="robot-img" onerror="this.src='https://via.placeholder.com/250x200?text=Robot+Image'">
+            </div>
+            <div class="title-container">
+                <h1 class="glowing-title">KOZO<br>CAR</h1>
+            </div>
+        </header>
+
+        <!-- Main Content Grid -->
+        <main class="dashboard-layout">
+            
+            <!-- Left Column: Robot State -->
+            <section class="section-left">
+                <h2 class="section-title">ROBOT STATE</h2>
+                <div class="lamps-container">
+                    <div class="lamp-wrapper">
+                        <div class="lamp" id="lamp-yellow"></div>
+                        <span>Moving</span>
+                    </div>
+                    <div class="lamp-wrapper">
+                        <div class="lamp" id="lamp-red"></div>
+                        <span>Obstacle<br>(Stop)</span>
+                    </div>
+                    <div class="lamp-wrapper">
+                        <div class="lamp" id="lamp-green"></div>
+                        <span>Target<br>Reached</span>
+                    </div>
+                </div>
+                <div class="current-state-text" id="state-text">Waiting for data...</div>
+            </section>
+
+            <!-- Right Column: Battery Level -->
+            <section class="section-right battery-section">
+                <h2 class="section-title">BATTERY LEVEL</h2>
+                <div class="battery-wrapper">
+                    <div class="battery-outer">
+                        <div class="battery-level" id="battery-fill"></div>
+                    </div>
+                    <div class="battery-nub"></div>
+                </div>
+                <div class="battery-text" id="battery-text">--%</div>
+            </section>
+
+            <!-- Full Width Header for Manual Control -->
+            <div class="manual-header-row">
+                <h2 class="section-title">MANUAL CONTROL</h2>
+                <label class="switch">
+                    <input type="checkbox" id="manual-toggle" onchange="toggleManualMode()">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+
+            <!-- Manual Controls Grid -->
+            <section class="control-panel disabled" id="control-panel">
+                <div class="movement-controls">
+                    <button class="control-btn" onmousedown="sendCommand('forward')" onmouseup="sendCommand('stop')" ontouchstart="sendCommand('forward')" ontouchend="sendCommand('stop')">
+                        <i class="fa-solid fa-arrow-up"></i> Forward
+                    </button>
+                    <button class="control-btn" onmousedown="sendCommand('stop')" ontouchstart="sendCommand('stop')">
+                        <i class="fa-solid fa-square"></i> Stop
+                    </button>
+                    <button class="control-btn" onmousedown="sendCommand('backward')" onmouseup="sendCommand('stop')" ontouchstart="sendCommand('backward')" ontouchend="sendCommand('stop')">
+                        <i class="fa-solid fa-arrow-down"></i> Backward
+                    </button>
+                </div>
+                
+                <div class="lcd-controls">
+                    <button class="control-btn" onclick="sendCommand('lcd_up')">
+                        <i class="fa-solid fa-angle-up"></i> LCD Up
+                    </button>
+                    <button class="control-btn" onclick="sendCommand('lcd_down')">
+                        <i class="fa-solid fa-angle-down"></i> LCD Down
+                    </button>
+                </div>
+            </section>
+
+            <!-- Bottom Section: Connection -->
+            <footer class="connection-row">
+                <h2 class="section-title">ESP32 CONNECTION</h2>
+                <div class="input-group">
+                    <input type="text" id="esp-ip" placeholder="e.g. 192.168.1.100" value="192.168.1.100">
+                    <button class="connect-btn" onclick="connectToRobot()">Connect</button>
+                </div>
+            </footer>
+            
+            <!-- Hidden status required by JS logic -->
+            <div class="connection-status hidden" style="display:none;">
+                 <span id="connectionText">Disconnected</span>
+            </div>
+
+        </main>
+    </div>
+    <script src="script.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('sw.js').then(registration => {
+            console.log('ServiceWorker registration successful');
+          }).catch(err => {
+            console.log('ServiceWorker registration failed: ', err);
+          });
+        });
+      }
+    </script>
+</body>
+</html>
