@@ -74,7 +74,7 @@ function sendCommand(cmd) {
         // SIMULATION: If we aren't connected, simulate the action
         if(cmd === 'stop') {
             setLampState('stopped');
-        } else if (cmd === 'forward' || cmd === 'backward') {
+        } else if (cmd === 'forward' || cmd === 'backward' || cmd === 'left' || cmd === 'right') {
             setLampState('moving');
         } else {
             console.log(`Simulating LCD Command: ${cmd}`);
@@ -90,6 +90,37 @@ function sendCommand(cmd) {
         .catch(err => {
             console.error("Failed to send command to ESP32:", err);
             updateConnectionState(false);
+        });
+}
+
+function sendWaypoint(id) {
+    const x = document.getElementById(`waypoint${id}-x`).value;
+    const y = document.getElementById(`waypoint${id}-y`).value;
+    
+    if (x === "" || y === "") {
+        alert(`Please enter both X and Y axis values for Waypoint ${id}.`);
+        return;
+    }
+    
+    if (!isManualModeEnabled) {
+        console.log("Manual mode is disabled. Waypoint ignored.");
+        return;
+    }
+
+    console.log(`Manual Mode -> Sending waypoint ${id}: X=${x}, Y=${y}`);
+
+    if (!isConnected) {
+        setLampState('moving');
+        return;
+    }
+
+    fetch(`http://${robotIP}/command?dir=waypoint&id=${id}&x=${x}&y=${y}`, { method: 'GET' })
+        .then(response => {
+            if (!response.ok) throw new Error("Network response was not ok");
+            console.log(`Successfully sent waypoint ${id}: X=${x}, Y=${y}`);
+        })
+        .catch(err => {
+            console.error(`Failed to send waypoint ${id} to ESP32:`, err);
         });
 }
 
@@ -185,8 +216,9 @@ let simIndex = 0;
 function simulateLiveData() {
     if (isConnected) return; // Don't simulate if we have real data
     
-    // Decrease battery slowly
-    simBattery -= 0.5;
+    // Decrease battery by 1% every 3 minutes (180 seconds).
+    // This function runs every 1 second, so we decrease by 1/180 each tick.
+    simBattery -= (1 / 180);
     if (simBattery < 5) simBattery = 100;
     updateBattery(simBattery);
 

@@ -74,6 +74,12 @@
                     <button class="control-btn" onmousedown="sendCommand('forward')" onmouseup="sendCommand('stop')" ontouchstart="sendCommand('forward')" ontouchend="sendCommand('stop')">
                         <i class="fa-solid fa-arrow-up"></i> Forward
                     </button>
+                    <button class="control-btn" onmousedown="sendCommand('left')" onmouseup="sendCommand('stop')" ontouchstart="sendCommand('left')" ontouchend="sendCommand('stop')">
+                        <i class="fa-solid fa-arrow-left"></i> Left
+                    </button>
+                    <button class="control-btn" onmousedown="sendCommand('right')" onmouseup="sendCommand('stop')" ontouchstart="sendCommand('right')" ontouchend="sendCommand('stop')">
+                        <i class="fa-solid fa-arrow-right"></i> Right
+                    </button>
                     <button class="control-btn" onmousedown="sendCommand('stop')" ontouchstart="sendCommand('stop')">
                         <i class="fa-solid fa-square"></i> Stop
                     </button>
@@ -89,6 +95,52 @@
                     <button class="control-btn" onclick="sendCommand('lcd_down')">
                         <i class="fa-solid fa-angle-down"></i> LCD Down
                     </button>
+
+                    <!-- Super Sale Button -->
+                    <button class="super-sale-btn" onclick="sendCommand('super_sale')" style="margin-top: 1rem;">
+                        <i class="fa-solid fa-tag"></i> SUPER SALE
+                    </button>
+
+                    <!-- Waypoint Controls -->
+                    <div class="waypoint-controls" style="margin-top: 1.5rem; width: 100%; display: flex; flex-direction: column; gap: 1rem;">
+                        <h3 style="color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase;">Add Your Way Points</h3>
+                        
+                        <!-- Waypoint 1 -->
+                        <div class="waypoint-row" style="display: flex; flex-direction: column; gap: 0.5rem; background: rgba(255,255,255,0.02); padding: 1rem; border-radius: 8px;">
+                            <span style="color: var(--text-muted); font-size: 0.8rem; font-weight: bold;">WAYPOINT 1</span>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <input type="number" id="waypoint1-x" placeholder="X Axis" class="custom-input">
+                                <input type="number" id="waypoint1-y" placeholder="Y Axis" class="custom-input">
+                            </div>
+                            <button class="control-btn" onclick="sendWaypoint(1)" style="width: 100%; justify-content: center; background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); padding: 0.8rem;">
+                                <i class="fa-solid fa-location-dot"></i> Go to WP 1
+                            </button>
+                        </div>
+
+                        <!-- Waypoint 2 -->
+                        <div class="waypoint-row" style="display: flex; flex-direction: column; gap: 0.5rem; background: rgba(255,255,255,0.02); padding: 1rem; border-radius: 8px;">
+                            <span style="color: var(--text-muted); font-size: 0.8rem; font-weight: bold;">WAYPOINT 2</span>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <input type="number" id="waypoint2-x" placeholder="X Axis" class="custom-input">
+                                <input type="number" id="waypoint2-y" placeholder="Y Axis" class="custom-input">
+                            </div>
+                            <button class="control-btn" onclick="sendWaypoint(2)" style="width: 100%; justify-content: center; background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); padding: 0.8rem;">
+                                <i class="fa-solid fa-location-dot"></i> Go to WP 2
+                            </button>
+                        </div>
+
+                        <!-- Waypoint 3 -->
+                        <div class="waypoint-row" style="display: flex; flex-direction: column; gap: 0.5rem; background: rgba(255,255,255,0.02); padding: 1rem; border-radius: 8px;">
+                            <span style="color: var(--text-muted); font-size: 0.8rem; font-weight: bold;">WAYPOINT 3</span>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <input type="number" id="waypoint3-x" placeholder="X Axis" class="custom-input">
+                                <input type="number" id="waypoint3-y" placeholder="Y Axis" class="custom-input">
+                            </div>
+                            <button class="control-btn" onclick="sendWaypoint(3)" style="width: 100%; justify-content: center; background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); padding: 0.8rem;">
+                                <i class="fa-solid fa-location-dot"></i> Go to WP 3
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -105,6 +157,23 @@
             <div class="connection-status hidden" style="display:none;">
                  <span id="connectionText">Disconnected</span>
             </div>
+
+            <!-- Description & Diagram Section -->
+            <section class="info-section">
+                <h2 class="section-title">ABOUT KOZO CAR</h2>
+                <div class="info-content">
+                    <p class="robot-desc">
+                        KOZO CAR is an autonomous car that is put in a mall, goes to a brand, detects its logo, and shows the brand ad in a way that attracts attention.
+                    </p>
+                    <div class="robot-diagram">
+                        <!-- Placeholder for the diagram -->
+                        <div class="diagram-placeholder">
+                            <i class="fa-solid fa-sitemap" style="font-size: 3rem; margin-bottom: 1rem; color: var(--accent);"></i>
+                            <p>Robot Architecture & Flow Diagram</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
         </main>
     </div>
