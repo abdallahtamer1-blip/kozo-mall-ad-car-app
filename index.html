@@ -71,21 +71,32 @@
             <!-- Manual Controls Grid -->
             <section class="control-panel disabled" id="control-panel">
                 <div class="movement-controls">
-                    <button class="control-btn" onmousedown="sendCommand('forward')" onmouseup="sendCommand('stop')" ontouchstart="sendCommand('forward')" ontouchend="sendCommand('stop')">
-                        <i class="fa-solid fa-arrow-up"></i> Forward
-                    </button>
-                    <button class="control-btn" onmousedown="sendCommand('left')" onmouseup="sendCommand('stop')" ontouchstart="sendCommand('left')" ontouchend="sendCommand('stop')">
-                        <i class="fa-solid fa-arrow-left"></i> Left
-                    </button>
-                    <button class="control-btn" onmousedown="sendCommand('right')" onmouseup="sendCommand('stop')" ontouchstart="sendCommand('right')" ontouchend="sendCommand('stop')">
-                        <i class="fa-solid fa-arrow-right"></i> Right
-                    </button>
-                    <button class="control-btn" onmousedown="sendCommand('stop')" ontouchstart="sendCommand('stop')">
-                        <i class="fa-solid fa-square"></i> Stop
-                    </button>
-                    <button class="control-btn" onmousedown="sendCommand('backward')" onmouseup="sendCommand('stop')" ontouchstart="sendCommand('backward')" ontouchend="sendCommand('stop')">
-                        <i class="fa-solid fa-arrow-down"></i> Backward
-                    </button>
+                    <div class="d-pad-container">
+                        <!-- Up -->
+                        <div class="d-pad-row">
+                            <button class="d-pad-btn" onmousedown="sendCommand('forward')" onmouseup="sendCommand('stop')" ontouchstart="sendCommand('forward')" ontouchend="sendCommand('stop')">
+                                <i class="fa-solid fa-caret-up"></i>
+                            </button>
+                        </div>
+                        <!-- Left, Stop, Right -->
+                        <div class="d-pad-row">
+                            <button class="d-pad-btn" onmousedown="sendCommand('left')" onmouseup="sendCommand('stop')" ontouchstart="sendCommand('left')" ontouchend="sendCommand('stop')">
+                                <i class="fa-solid fa-caret-left"></i>
+                            </button>
+                            <button class="d-pad-btn stop" onmousedown="sendCommand('stop')" ontouchstart="sendCommand('stop')">
+                                <i class="fa-solid fa-circle"></i>
+                            </button>
+                            <button class="d-pad-btn" onmousedown="sendCommand('right')" onmouseup="sendCommand('stop')" ontouchstart="sendCommand('right')" ontouchend="sendCommand('stop')">
+                                <i class="fa-solid fa-caret-right"></i>
+                            </button>
+                        </div>
+                        <!-- Down -->
+                        <div class="d-pad-row">
+                            <button class="d-pad-btn" onmousedown="sendCommand('backward')" onmouseup="sendCommand('stop')" ontouchstart="sendCommand('backward')" ontouchend="sendCommand('stop')">
+                                <i class="fa-solid fa-caret-down"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="lcd-controls">
