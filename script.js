@@ -93,6 +93,24 @@ function sendCommand(cmd) {
         });
 }
 
+function startRobot() {
+    console.log(`Autonomous Mode -> Sending command: start`);
+    
+    if (!isConnected) {
+        setLampState('moving');
+        return;
+    }
+
+    fetch(`http://${robotIP}/command?dir=start`, { method: 'GET' })
+        .then(response => {
+            if (!response.ok) throw new Error("Network response was not ok");
+            console.log(`Successfully sent: start`);
+        })
+        .catch(err => {
+            console.error("Failed to send command to ESP32:", err);
+        });
+}
+
 function sendWaypoint(id) {
     const x = document.getElementById(`waypoint${id}-x`).value;
     const y = document.getElementById(`waypoint${id}-y`).value;

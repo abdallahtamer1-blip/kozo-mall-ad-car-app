@@ -59,6 +59,13 @@
                 <div class="battery-text" id="battery-text">--%</div>
             </section>
 
+            <!-- Main Autonomous Start -->
+            <div class="main-start-row" style="grid-column: 1 / -1; margin-bottom: 0.5rem;">
+                <button class="start-btn" onclick="startRobot()" style="padding: 2rem; font-size: 2rem; border-radius: 16px;">
+                    <i class="fa-solid fa-power-off"></i> START ROBOT
+                </button>
+            </div>
+
             <!-- Full Width Header for Manual Control -->
             <div class="manual-header-row">
                 <h2 class="section-title">MANUAL CONTROL</h2>
@@ -105,11 +112,6 @@
                     </button>
                     <button class="control-btn" onclick="sendCommand('lcd_down')">
                         <i class="fa-solid fa-angle-down"></i> LCD Down
-                    </button>
-
-                    <!-- Start Button -->
-                    <button class="start-btn" onclick="sendCommand('start')" style="margin-top: 1rem;">
-                        <i class="fa-solid fa-play"></i> START
                     </button>
 
                     <!-- Super Sale Button -->
