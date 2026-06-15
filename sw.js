@@ -1,10 +1,13 @@
-const CACHE_NAME = 'kozo-car-cache-v6';
+const CACHE_NAME = 'kozo-car-cache-v8';
 const urlsToCache = [
   './',
   './index.html',
   './style.css',
   './script.js',
-  './background.png'
+  './background.png',
+  './adidas.png',
+  './ck.png',
+  './starbucks.png'
 ];
 
 self.addEventListener('install', event => {
