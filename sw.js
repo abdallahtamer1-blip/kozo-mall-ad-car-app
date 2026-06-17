@@ -1,9 +1,9 @@
-const CACHE_NAME = 'kozo-car-cache-v3';
+const CACHE_NAME = 'kozo-car-cache-v4';
 const urlsToCache = [
   './',
   './index.html',
   './style.css?v=3',
-  './script.js?v=3',
+  './script.js?v=4',
   './background.png'
 ];
 

@@ -1,4 +1,4 @@
-let robotIP = "192.168.1.100:5000";
+let robotIP = "192.168.4.1";
 let isConnected = false;
 let dataInterval;
 let isManualModeEnabled = false;
@@ -22,12 +22,7 @@ function connectToRobot() {
         return;
     }
     
-    // Automatically append port 5000 if no port is specified
-    if (!inputIP.includes(":")) {
-        robotIP = `${inputIP}:5000`;
-    } else {
-        robotIP = inputIP;
-    }
+    robotIP = inputIP;
     
     // Attempt initial connection by fetching status
     console.log(`Attempting connection to ESP32/ROS2 Robot at ${robotIP}...`);
