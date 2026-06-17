@@ -1,4 +1,4 @@
-let robotIP = "192.168.1.100";
+let robotIP = "192.168.1.100:5000";
 let isConnected = false;
 let dataInterval;
 let isManualModeEnabled = false;
@@ -16,14 +16,21 @@ const lampRed = document.getElementById("lamp-red");
 const lampGreen = document.getElementById("lamp-green");
 
 function connectToRobot() {
-    robotIP = ipInput.value.trim();
-    if (!robotIP) {
+    const inputIP = ipInput.value.trim();
+    if (!inputIP) {
         alert("Please enter a valid IP address.");
         return;
     }
     
+    // Automatically append port 5000 if no port is specified
+    if (!inputIP.includes(":")) {
+        robotIP = `${inputIP}:5000`;
+    } else {
+        robotIP = inputIP;
+    }
+    
     // Attempt initial connection by fetching status
-    console.log(`Attempting connection to ESP32 at ${robotIP}...`);
+    console.log(`Attempting connection to ESP32/ROS2 Robot at ${robotIP}...`);
     fetchStatus();
     
     // Set up polling interval to get live data every 2 seconds
@@ -45,6 +52,18 @@ function updateConnectionState(connected) {
 function toggleManualMode() {
     isManualModeEnabled = document.getElementById("manual-toggle").checked;
     const panel = document.getElementById("control-panel");
+    
+    // Notify the server about the manual mode state
+    const modeStr = isManualModeEnabled ? 'on' : 'off';
+    if (isConnected) {
+        fetch(`http://${robotIP}/manual?mode=${modeStr}`, { method: 'GET' })
+            .then(response => {
+                if (!response.ok) throw new Error("Failed to set manual mode on server");
+                console.log(`Server manual mode set to: ${modeStr}`);
+            })
+            .catch(e => console.error(e));
+    }
+
     if (isManualModeEnabled) {
         panel.classList.remove("disabled");
         console.log("Manual Mode: ENABLED");
@@ -143,10 +162,8 @@ function sendWaypoint(id) {
 }
 
 
-// Function to fetch live data (Battery, State) from ESP32
+// Function to fetch live data (Battery, State) from ESP32 / ROS2
 function fetchStatus() {
-    // Example ESP32 Endpoint: http://192.168.1.100/status
-    // Should return JSON like: {"battery": 85, "state": "moving", "brand_detected": "adidas"}
     fetch(`http://${robotIP}/status`, { method: 'GET' })
         .then(response => {
             if (!response.ok) throw new Error("Network error");
@@ -156,25 +173,32 @@ function fetchStatus() {
             updateConnectionState(true);
             updateBattery(data.battery);
             updateRobotState(data.state);
-            if (data.brand_detected) {
-                markBrandDetected(data.brand_detected);
-            }
+            markBrandDetected(data.brand_detected);
         })
         .catch(err => {
             if (isConnected) {
-                console.error("Lost connection to ESP32.");
+                console.error("Lost connection to ESP32 / ROS2.");
             }
             updateConnectionState(false);
         });
 }
 
 function markBrandDetected(brandId) {
+    // Clear detection checkmarks from all brands first
+    const allBrands = ['adidas', 'starbucks', 'adidaskids'];
+    allBrands.forEach(b => {
+        const el = document.getElementById(`brand-${b}`);
+        if (el) el.classList.remove('detected');
+    });
+
+    if (!brandId) return;
+
     const brandEl = document.getElementById(`brand-${brandId}`);
-    if (brandEl && !brandEl.classList.contains('detected')) {
+    if (brandEl) {
         brandEl.classList.add('detected');
         console.log(`Brand detected: ${brandId}`);
-        // Optionally update the main state text
-        const formattedBrand = brandId === 'calvinklein' ? 'Calvin Klein' : brandId.charAt(0).toUpperCase() + brandId.slice(1);
+        // Update the main state text
+        const formattedBrand = brandId === 'adidaskids' ? 'Adidas Kids' : brandId.charAt(0).toUpperCase() + brandId.slice(1);
         stateText.textContent = `${formattedBrand} Found!`;
         stateText.style.color = "var(--lamp-green)";
     }
