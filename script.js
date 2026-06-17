@@ -146,7 +146,7 @@ function sendWaypoint(id) {
 // Function to fetch live data (Battery, State) from ESP32
 function fetchStatus() {
     // Example ESP32 Endpoint: http://192.168.1.100/status
-    // Should return JSON like: {"battery": 85, "state": "moving"}
+    // Should return JSON like: {"battery": 85, "state": "moving", "brand_detected": "adidas"}
     fetch(`http://${robotIP}/status`, { method: 'GET' })
         .then(response => {
             if (!response.ok) throw new Error("Network error");
@@ -156,6 +156,9 @@ function fetchStatus() {
             updateConnectionState(true);
             updateBattery(data.battery);
             updateRobotState(data.state);
+            if (data.brand_detected) {
+                markBrandDetected(data.brand_detected);
+            }
         })
         .catch(err => {
             if (isConnected) {
@@ -163,6 +166,18 @@ function fetchStatus() {
             }
             updateConnectionState(false);
         });
+}
+
+function markBrandDetected(brandId) {
+    const brandEl = document.getElementById(`brand-${brandId}`);
+    if (brandEl && !brandEl.classList.contains('detected')) {
+        brandEl.classList.add('detected');
+        console.log(`Brand detected: ${brandId}`);
+        // Optionally update the main state text
+        const formattedBrand = brandId === 'calvinklein' ? 'Calvin Klein' : brandId.charAt(0).toUpperCase() + brandId.slice(1);
+        stateText.textContent = `${formattedBrand} Found!`;
+        stateText.style.color = "var(--lamp-green)";
+    }
 }
 
 function updateBattery(level) {
@@ -230,6 +245,8 @@ function updateRobotState(stateStr) {
 let simBattery = 100;
 let simStates = ['moving', 'moving', 'obstacle', 'moving', 'reached'];
 let simIndex = 0;
+let simBrands = ['adidas', 'starbucks', 'adidaskids'];
+let simBrandIndex = 0;
 
 function simulateLiveData() {
     if (isConnected) return; // Don't simulate if we have real data
@@ -243,6 +260,12 @@ function simulateLiveData() {
     // Rotate states every 3 seconds
     simIndex = Math.floor(Date.now() / 3000) % simStates.length;
     updateRobotState(simStates[simIndex]);
+
+    // Simulate finding a brand randomly every ~15 seconds
+    if (Math.random() < 0.05 && simBrandIndex < simBrands.length) {
+        markBrandDetected(simBrands[simBrandIndex]);
+        simBrandIndex++;
+    }
 }
 
 // Initial simulation start
